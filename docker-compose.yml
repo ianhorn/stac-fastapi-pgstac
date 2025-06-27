@@ -26,7 +26,7 @@ services:
       - STAC_FASTAPI_TITLE=${STAC_FASTAPI_TITLE}
       - STAC_FASTAPI_DESCRIPTION=${STAC_FASTAPI_DESCRIPTION}
       - STAC_FASTAPI_LANDING_PAGE_ID=${STAC_FASTAPI_LANDING_PAGE_ID}
-      - STAC_FASTAPI_ROOT_PATH=/api/v1
+      - STAC_FASTAPI_ROOT_PATH=/stac
     ports:
       - "8082:8082"
     working_dir: /app
@@ -34,7 +34,8 @@ services:
       - .:/app
     depends_on:
       - database
-    command: bash -c "./scripts/wait-for-it.sh database:5432 && python -m stac_fastapi.pgstac.app"
+    command: bash -c "./scripts/wait-for-it.sh database:5432 && uvicorn stac_fastapi.pgstac.app:app --host 0.0.0.0 --port 8082 --root-path />
+
   database:
     image: ghcr.io/stac-utils/pgstac:v0.9.6
     platform: linux/arm64
