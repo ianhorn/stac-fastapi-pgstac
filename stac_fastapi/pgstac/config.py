@@ -159,17 +159,28 @@ class Settings(ApiSettings):
     """API settings.
 
     Attributes:
+        prefix_path: An optional path prefix for the underyling FastAPI router.
         use_api_hydrate: perform hydration of stac items within stac-fastapi.
         invalid_id_chars: list of characters that are not allowed in item or collection ids.
 
     """
 
+    prefix_path: str = ""
     use_api_hydrate: bool = False
     invalid_id_chars: List[str] = DEFAULT_INVALID_ID_CHARS
     base_item_cache: Type[BaseItemCache] = DefaultBaseItemCache
 
+    validate_extensions: bool = False
+    """
+    Validate `stac_extensions` schemas against submitted data when creating or updated STAC objects.
+
+    Implies that the `Transactions` extension is enabled.
+    """
+
     cors_origins: str = "*"
     cors_methods: str = "GET,POST,OPTIONS"
+    cors_credentials: bool = False
+    cors_headers: str = "Content-Type"
 
     testing: bool = False
 
@@ -182,3 +193,8 @@ class Settings(ApiSettings):
     def parse_cors_methods(cls, v):
         """Parse CORS methods."""
         return [method.strip() for method in v.split(",")]
+
+    @field_validator("cors_headers")
+    def parse_cors_headers(cls, v):
+        """Parse CORS headers."""
+        return [header.strip() for header in v.split(",")]

@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install .[dev,server]
+          python -m pip install .[dev,server,validation]
           python -m pip install "pypgstac==${{ matrix.pypgstac }}"
 
       - name: Run test suite
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       pgstac:
-        image: ghcr.io/stac-utils/pgstac:v0.9.5
+        image: ghcr.io/stac-utils/pgstac:v0.9.8
         env:
           POSTGRES_USER: username
           POSTGRES_PASSWORD: password

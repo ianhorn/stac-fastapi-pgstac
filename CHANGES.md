@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [6.0.0] - 2025-08-08
+
+### Fixed
+
+- fix root-path handling when setting via env var or on app instance
+- Allow `q` parameter to be a `str` not a `list[str]` for Advanced Free-Text extension
+- do not `unquote` parameters for next/prev links
+
 ### Changed
 
 - rename `POSTGRES_HOST_READER` to `PGHOST` in config **breaking change**
@@ -9,6 +17,7 @@
 - rename `POSTGRES_PASS` to `PGPASSWORD` in config **breaking change**
 - rename `POSTGRES_PORT` to `PGPORT` in config **breaking change**
 - rename `POSTGRES_DBNAME` to `PGDATABASE` in config **breaking change**
+
   ```python
   from stac_fastapi.pgstac.config import PostgresSettings
 
@@ -37,13 +46,20 @@
 - disable transaction and bulk_transactions extensions by default **breaking change**
 - update `stac-fastapi-*` version requirements to `>=5.2,<6.0`
 - add pgstac health-check in `/_mgmt/health`
-- switch from using pygeofilter to cql2
+- switch from using `pygeofilter` to `cql2`
+- publish arm64 Docker images
 
 ### Added
 
+- add `validate_extensions` setting that enables validation of `stac_extensions` from submitted STAC objects
+  using the `stac_pydantic.extensions.validate_extensions` utility. Applicable only when `TransactionExtension`
+  is active.
+- add `validation` extra requirement to install dependencies of `stac_pydantic` required for extension validation
 - add `write_connection_pool` option in `stac_fastapi.pgstac.db.connect_to_db` function
 - add `write_postgres_settings` option in `stac_fastapi.pgstac.db.connect_to_db` function to set specific settings for the `writer` DB connection pool
 - add specific error message when trying to create `Item` with null geometry (not supported by PgSTAC)
+- add support for Patch in transactions extension
+- CORS authentication setting
 
 ### removed
 
@@ -51,6 +67,12 @@
 - `POSTGRES_HOST_WRITER` in config
 - `writer_connection_string` in `PostgresSettings` class
 - `testing_connection_string` in `PostgresSettings` class
+
+## [5.0.3] - 2025-07-23
+
+### Fixed
+
+- fix root-path handling when setting via env var or on app instance ([#270](https://github.com/stac-utils/stac-fastapi-pgstac/pull/270))
 
 ## [5.0.2] - 2025-04-07
 
@@ -459,7 +481,9 @@ As a part of this release, this repository was extracted from the main
 
 - First PyPi release!
 
-[Unreleased]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/5.0.2..main>
+[Unreleased]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/6.0.0..main>
+[6.0.0]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/5.0.3..6.0.0>
+[5.0.3]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/5.0.2..5.0.3>
 [5.0.2]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/5.0.1..5.0.2>
 [5.0.1]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/5.0.0..5.0.1>
 [5.0.0]: <https://github.com/stac-utils/stac-fastapi-pgstac/compare/4.0.3..5.0.0>
