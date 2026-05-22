@@ -1,6 +1,6 @@
 services:
   app:
-    image: 405369522825.dkr.ecr.us-west-2.amazonaws.com/stac-fastapi-pgstac:v5.0.3
+    image: 405369522825.dkr.ecr.us-west-2.amazonaws.com/stac-fastapi-pgstac:6.0.0
     container_name: stac-fastapi-pgstac
     environment:
       - APP_HOST=0.0.0.0
@@ -24,7 +24,6 @@ services:
       - "8082:8082"
     volumes:
       - ./stac_fastapi:/app/stac_fastapi
-    depends_on:
     command: bash -c "scripts/wait-for-it.sh ${PGHOST}:5432 && python -m stac_fastapi.pgstac.app"
     develop:
       watch:
