@@ -19,14 +19,13 @@ services:
       - DB_MIN_CONN_SIZE=1
       - DB_MAX_CONN_SIZE=1
       - USE_API_HYDRATE=${USE_API_HYDRATE:-false}
-      - ENABLE_TRANSACTIONS_EXTENSIONS=TRUE
+      - ENABLE_TRANSACTIONS_EXTENSIONS=TRUE 
     ports:
       - "8082:8082"
     volumes:
       - ./stac_fastapi:/app/stac_fastapi
     depends_on:
-      - database
-    command: bash -c "scripts/wait-for-it.sh database:5432 && python -m stac_fastapi.pgstac.app"
+    command: bash -c "scripts/wait-for-it.sh ${PGHOST}:5432 && python -m stac_fastapi.pgstac.app"
     develop:
       watch:
         - action: rebuild
